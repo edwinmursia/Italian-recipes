@@ -8,7 +8,7 @@ import tkinter as tk
 root = tk.Tk()
 root.title('Italian-recipes')
 height=600
-width=700
+width=895
 
 def test_function(entry):
     url = 'https://www.giallozafferano.com/recipes-search/' + entry
@@ -40,8 +40,15 @@ def test_function(entry):
         img = card.picture.img
         img_src = img.get('data-src')
 
-        recipe = (title, description, course, difficulty, img_src, recipe_url)
-
+        # Formatting the text that appears in the GUI.
+        try:
+            title = str(title)
+            description = str(description)
+            course = str(course)
+            difficulty = str(difficulty)
+            recipe = '\nMeal: %s  \nDescription: %s \nCourse: %s \nDifficulty: %s\n' % (title, description, course, difficulty)
+        except:
+            recipe = 'There was a problem retrieving the information.'
         return recipe
 
     recipes = []
@@ -51,6 +58,8 @@ def test_function(entry):
         recipes.append(recipe)
 
     print(recipes) # How many recipes to print?
+
+    label['text'] = recipes
 
     while True:
         try:
@@ -85,7 +94,7 @@ lower_frame.place(relx=0.5, rely=0.25, relwidth=0.75, relheight=0.6, anchor='n')
 button = tk.Button(frame, text='Enter food or ingredient', font=40, command=lambda: test_function(entry.get()))
 button.place(relx=0.55, relwidth=0.45, relheight=1)
 
-label = tk.Label(lower_frame)
+label = tk.Label(lower_frame, anchor='nw', justify='left', bd=4)
 label.place(relwidth=1, relheight=1)
 
 entry = tk.Entry(frame, font=40)
